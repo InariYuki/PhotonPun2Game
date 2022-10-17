@@ -56,7 +56,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         joinRoom = GameObject.Find("加入指定房間按鈕").GetComponent<Button>();
         joinRandomRoom = GameObject.Find("加入隨機房間按鈕").GetComponent<Button>();
         mainCanvasGroup = GameObject.Find("MainCanvas").GetComponent<CanvasGroup>();
-        inputPlayerName.onEndEdit.AddListener((input) => playerName = input);
+        inputPlayerName.onEndEdit.AddListener((input) => { 
+            playerName = input;
+            PhotonNetwork.NickName = playerName;
+        });
         inputCreateRoomName.onEndEdit.AddListener((input) => createRoomName = input);
         inputJoinRoomName.onEndEdit.AddListener((input) => joinRoomName = input);
         createRoom.onClick.AddListener(CreateRoom);
@@ -68,7 +71,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         textRoomName = GameObject.Find("RoomName").GetComponent<TextMeshProUGUI>();
         textPlayerCount = GameObject.Find("PlayerCount").GetComponent<TextMeshProUGUI>();
         roomCanvasGroup = GameObject.Find("RoomCanvas").GetComponent<CanvasGroup>();
+        leaveRoom = GameObject.Find("BackButton").GetComponent<Button>();
+        startGame = GameObject.Find("StartButton").GetComponent<Button>();
         leaveRoom.onClick.AddListener(LeaveRoom);
+        startGame.onClick.AddListener(() => photonView.RPC("RPCStartGame" , RpcTarget.All));
     }
     void CreateRoom()
     {
@@ -96,6 +102,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomCanvasGroup.alpha = 0;
         roomCanvasGroup.interactable = false;
         roomCanvasGroup.blocksRaycasts = false;
+    }
+    [PunRPC]
+    void RPCStartGame()
+    {
+        PhotonNetwork.LoadLevel("遊戲");
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {

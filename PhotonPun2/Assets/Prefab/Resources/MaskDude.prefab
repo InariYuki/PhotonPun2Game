@@ -117,6 +117,8 @@ GameObject:
   - component: {fileID: 2223090737522707559}
   - component: {fileID: 2223090737522707558}
   - component: {fileID: 2223090737522707556}
+  - component: {fileID: -8788535102925107845}
+  - component: {fileID: 2658167810617119801}
   m_Layer: 0
   m_Name: MaskDude
   m_TagString: Untagged
@@ -310,6 +312,40 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &-8788535102925107845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2223090737522707564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 889a892ebb0252a499177b1e2294de30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3.5
+  jump: 30
+  groundOffset: {x: 0, y: -0.54, z: 0}
+  groundSize: {x: 0.66, y: 0.06, z: 0}
+--- !u!114 &2658167810617119801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2223090737522707564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541a76f9c03874323b5154b14ac00427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spline: {fileID: 0}
+  Speed: 0
+  lookForward: 0
+  reverse: 0
+  currentDistance: 0
+  currentClampedDistance: 0
 --- !u!1 &2223090737721222675
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +358,7 @@ GameObject:
   - component: {fileID: 2223090737721222678}
   - component: {fileID: 2223090737721222673}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: NameDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
