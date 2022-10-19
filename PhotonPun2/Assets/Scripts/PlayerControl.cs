@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviourPunCallbacks
 {
@@ -19,6 +20,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks
     CanvasGroup playerCanvas;
     Animator anim;
     TextMeshProUGUI winnerDispley;
+    Button returnButton;
     private void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -29,6 +31,14 @@ public class PlayerControl : MonoBehaviourPunCallbacks
         chickenNumDisplay = transform.Find("PlayerCanvas/ChickenNum").GetComponent<TextMeshProUGUI>();
         playerCanvas = GameObject.Find("GameUI").GetComponent<CanvasGroup>();
         winnerDispley = GameObject.Find("Winner").GetComponent<TextMeshProUGUI>();
+        returnButton = GameObject.Find("Back").GetComponent<Button>();
+        returnButton.onClick.AddListener(() => {
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.LoadLevel("¥D­n");
+            }
+        });
     }
     private void Start()
     {
@@ -39,6 +49,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks
         Move();
         CheckGround();
         Jump();
+        DetectPosition();
     }
     private void OnDrawGizmos()
     {
@@ -87,7 +98,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks
     {
         if (collision.name.Contains("Chicken"))
         {
-            PhotonNetwork.Destroy(collision.gameObject);
+            Destroy(collision.gameObject);
             chickenNumDisplay.text = (++chickenCount).ToString();
             if(chickenCount >= winCount)
             {
@@ -110,6 +121,14 @@ public class PlayerControl : MonoBehaviourPunCallbacks
         for(int i = 0; i < chickens.Length; i++)
         {
             Destroy(chickens[i]);
+        }
+    }
+    void DetectPosition()
+    {
+        if(transform.position.y < -15f)
+        {
+            transform.position = new Vector3(0 , 1.5f , 0);
+            rigidBody.velocity = Vector3.zero;
         }
     }
 }

@@ -107,6 +107,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPCStartGame()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("¹CÀ¸");
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
