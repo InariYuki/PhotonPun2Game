@@ -13,13 +13,22 @@ public class PlayerControl : MonoBehaviourPunCallbacks
     [SerializeField] Vector3 groundSize;
     Rigidbody2D rigidBody;
     SpriteRenderer sprite;
+    TextMeshProUGUI chickenNumDisplay;
     bool isGround;
+    int chickenCount , winCount = 3;
+    CanvasGroup playerCanvas;
+    Animator anim;
+    TextMeshProUGUI winnerDispley;
     private void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         if (!photonView.IsMine) enabled = false;
         photonView.RPC("RPCUpdateName", RpcTarget.All);
+        chickenNumDisplay = transform.Find("PlayerCanvas/ChickenNum").GetComponent<TextMeshProUGUI>();
+        playerCanvas = GameObject.Find("GameUI").GetComponent<CanvasGroup>();
+        winnerDispley = GameObject.Find("Winner").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -39,6 +48,14 @@ public class PlayerControl : MonoBehaviourPunCallbacks
     void Move()
     {
         float input = Input.GetAxis("Horizontal");
+        if(input != 0)
+        {
+            anim.SetBool("boolMove", true);
+        }
+        else
+        {
+            anim.SetBool("boolMove", false);
+        }
         if(input > 0)
         {
             sprite.flipX = false;
@@ -71,6 +88,28 @@ public class PlayerControl : MonoBehaviourPunCallbacks
         if (collision.name.Contains("Chicken"))
         {
             PhotonNetwork.Destroy(collision.gameObject);
+            chickenNumDisplay.text = (++chickenCount).ToString();
+            if(chickenCount >= winCount)
+            {
+                Win();
+            }
+        }
+    }
+    void Win()
+    {
+        playerCanvas.alpha = 1;
+        playerCanvas.interactable = true;
+        playerCanvas.blocksRaycasts = true;
+        winnerDispley.text = "Winner:" + photonView.Owner.NickName;
+        DestroyChickens();
+    }
+    void DestroyChickens()
+    {
+        Destroy(FindObjectOfType<SpawnChicken>().gameObject);
+        GameObject[] chickens = GameObject.FindGameObjectsWithTag("G");
+        for(int i = 0; i < chickens.Length; i++)
+        {
+            Destroy(chickens[i]);
         }
     }
 }

@@ -10,7 +10,10 @@ public class SpawnChicken : MonoBehaviour
     [SerializeField] Transform[] spawnPoints;
     private void Awake()
     {
-        InvokeRepeating("Spawn" , 0 , spawnInterval);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            InvokeRepeating("Spawn" , 0 , spawnInterval);
+        }
     }
     void Spawn()
     {

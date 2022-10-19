@@ -46,6 +46,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         print("room joined");
+        roomCanvasGroup.alpha = 1;
+        roomCanvasGroup.interactable = true;
+        roomCanvasGroup.blocksRaycasts = true;
+        textRoomName.text = "Room name:" + PhotonNetwork.CurrentRoom.Name;
+        textPlayerCount.text = $"players:{PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
     void InitLobby()
     {
@@ -74,7 +79,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         leaveRoom = GameObject.Find("BackButton").GetComponent<Button>();
         startGame = GameObject.Find("StartButton").GetComponent<Button>();
         leaveRoom.onClick.AddListener(LeaveRoom);
-        startGame.onClick.AddListener(() => photonView.RPC("RPCStartGame" , RpcTarget.All));
+        startGame.onClick.AddListener(() => photonView.RPC("RPCStartGame", RpcTarget.All));
     }
     void CreateRoom()
     {
@@ -86,11 +91,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinRoomName);
-        roomCanvasGroup.alpha = 1;
-        roomCanvasGroup.interactable = true;
-        roomCanvasGroup.blocksRaycasts = true;
-        textRoomName.text = "Room name:" + PhotonNetwork.CurrentRoom.Name;
-        textPlayerCount.text = $"players:{PhotonNetwork.CurrentRoom.PlayerCount}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
+        
     }
     void JoinRandomRoom()
     {
